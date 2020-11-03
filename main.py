@@ -26,7 +26,7 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 
 class Patient(BaseModel):
     ticket_id: str
-    patient_id: str
+    patient_id: int
     hospital: str
     bed_type: Optional[str] = 'no_bed_type'
     name: Optional[str] = None
@@ -73,7 +73,7 @@ def read_root():
 
 
 
-@app.put("/block_bed")
+@app.post("/block_bed")
 def block_bed(
     patient : Patient,
     username: str = Depends(get_current_username),
@@ -81,7 +81,7 @@ def block_bed(
     # add patient to patient.csv
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
 
     alloted = False
     in_queue = True
@@ -111,7 +111,7 @@ def allot_bed(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
 
     alloted = True
     in_queue = False
@@ -129,7 +129,7 @@ def allot_bed(
     update_data()
     return {"message": "bed alloted"}
 
-@app.get("/cured")
+@app.put("/cured")
 def becuredds(
     patient : Patient,
     username: str = Depends(get_current_username)
@@ -137,6 +137,7 @@ def becuredds(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
+    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
 
     alloted = False
     in_queue = False
@@ -149,11 +150,12 @@ def becuredds(
     if patient.patient_id in df_patient['patient_id'].unique():
         df_patient = df_patient.drop(index=df_patient[df_patient['patient_id']==patient.patient_id].index).reset_index(drop=True)
     df_patient.loc[len(df_patient)] = data
+    df_patient.to_csv("patient.csv",index=False)
 
     update_data()
     return {"message": "bed cleared"}
 
-@app.get("/deceased")
+@app.put("/deceased")
 def deceased(
     patient : Patient,
     username: str = Depends(get_current_username)
@@ -161,6 +163,7 @@ def deceased(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
+    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
 
     alloted = False
     in_queue = False
@@ -173,6 +176,7 @@ def deceased(
     if patient.patient_id in df_patient['patient_id'].unique():
         df_patient = df_patient.drop(index=df_patient[df_patient['patient_id']==patient.patient_id].index).reset_index(drop=True)
     df_patient.loc[len(df_patient)] = data
+    df_patient.to_csv("patient.csv",index=False)
 
     update_data()
     return {"message": "bed cleared"}
@@ -180,7 +184,7 @@ def deceased(
 @app.get("/data")
 def data():
     data = pd.read_csv("data.csv")
-
+    data = data.groupby("hospital_name").sum()
     data_json = data.to_json()
     data_json = json.loads(data_json)
     return data_json

@@ -1,4 +1,3 @@
 state,hospital_name,total_isolation_bed,total_oxygen_beds,total_ventilator_beds,alloted_isolation_beds,alloted_oxygen_beds,alloted_ventilator_beds,queue_isolation_beds,queue_oxygen_beds,queue_ventilator_beds,queue_not_decided
-puducherry,a,50,25,10,,,,,,,
-puducherry,b,100,50,20,,,,,,,
-puducherry,c,150,75,50,,,,,,,
+puducherry,IGMC,50,25,10,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+puducherry,JIPMER,100,50,20,0.0,0.0,0.0,0.0,0.0,0.0,0.0
