@@ -26,7 +26,7 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 
 class Patient(BaseModel):
     ticket_id: str
-    patient_id: int
+    patient_id: str
     hospital: str
     bed_type: Optional[str] = 'no_bed_type'
     name: Optional[str] = None
@@ -81,7 +81,7 @@ def block_bed(
     # add patient to patient.csv
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
     alloted = False
     in_queue = True
@@ -111,7 +111,7 @@ def allot_bed(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
     alloted = True
     in_queue = False
@@ -137,7 +137,7 @@ def becuredds(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
     alloted = False
     in_queue = False
@@ -163,7 +163,7 @@ def deceased(
 
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
-    df_patient['patient_id'] = df_patient['patient_id'].astype(int)
+    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
     alloted = False
     in_queue = False
