@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h1>Puducherry Bed Management Tool</h1>
+
+<h3>IGMC</h3>
+<table>
+  <tr>
+    <th>Bed Type</th>
+    <th>Vacant</th>
+    <th>Occupied</th>
+    <th>Total</th>
+    <th>Queue</th>
+  </tr>
+  <tr>
+    <td>Ventilator Bed</td>
+    <td>{{ data['IGMC']['Ventilator Bed']['vacant'][0]|int }}</td>
+    <td>{{ data['IGMC']['Ventilator Bed']['occupied'][0]|int }}</td>
+    <td>{{ data['IGMC']['Ventilator Bed']['total'][0]|int }}</td>
+    <td>{{ data['IGMC']['Ventilator Bed']['queue'][0]|int }}</td>    
+  </tr>
+  <tr>
+    <td>Oxygen Bed</td>
+    <td>{{ data['IGMC']['Oxygen Bed']['vacant'][0]|int }}</td>
+    <td>{{ data['IGMC']['Oxygen Bed']['occupied'][0]|int }}</td>
+    <td>{{ data['IGMC']['Oxygen Bed']['total'][0]|int }}</td>
+    <td>{{ data['IGMC']['Oxygen Bed']['queue'][0]|int }}</td>    
+  </tr>
+  <tr>
+    <td>Isolation Bed</td>
+    <td>{{ data['IGMC']['Isolation Bed']['vacant'][0]|int }}</td>
+    <td>{{ data['IGMC']['Isolation Bed']['occupied'][0]|int }}</td>
+    <td>{{ data['IGMC']['Isolation Bed']['total'][0]|int }}</td>
+    <td>{{ data['IGMC']['Isolation Bed']['queue'][0]|int }}</td>    
+  </tr>    
+  </tr>
+  <tr>
+    <td>No Bed Type</td>
+    <td>{{ data['IGMC']['no_bed_type']['vacant'][0] }}</td>
+    <td>{{ data['IGMC']['no_bed_type']['occupied'][0] }}</td>
+    <td>{{ data['IGMC']['no_bed_type']['total'][0] }}</td>
+    <td>{{ data['IGMC']['no_bed_type']['queue'][0]|int }}</td>     
+  </tr>
+</table>
+
+<h3>JIPMER</h3>
+<table>
+    <tr>
+      <th>Bed Type</th>
+      <th>Vacant</th>
+      <th>Occupied</th>
+      <th>Total</th>
+      <th>Queue</th>
+    </tr>
+    <tr>
+      <td>Ventilator Bed</td>
+      <td>{{ data['JIPMER']['Ventilator Bed']['vacant'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Ventilator Bed']['occupied'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Ventilator Bed']['total'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Ventilator Bed']['queue'][0]|int }}</td>    
+    </tr>
+    <tr>
+      <td>Oxygen Bed</td>
+      <td>{{ data['JIPMER']['Oxygen Bed']['vacant'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Oxygen Bed']['occupied'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Oxygen Bed']['total'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Oxygen Bed']['queue'][0]|int }}</td>    
+    </tr>
+    <tr>
+      <td>Isolation Bed</td>
+      <td>{{ data['JIPMER']['Isolation Bed']['vacant'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Isolation Bed']['occupied'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Isolation Bed']['total'][0]|int }}</td>
+      <td>{{ data['JIPMER']['Isolation Bed']['queue'][0]|int }}</td>    
+    </tr>    
+    </tr>
+    <tr>
+      <td>No Bed Type</td>
+      <td>{{ data['JIPMER']['no_bed_type']['vacant'][0] }}</td>
+      <td>{{ data['JIPMER']['no_bed_type']['occupied'][0] }}</td>
+      <td>{{ data['JIPMER']['no_bed_type']['total'][0] }}</td>
+      <td>{{ data['JIPMER']['no_bed_type']['queue'][0]|int }}</td>     
+    </tr>
+  </table>
