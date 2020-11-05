@@ -11,7 +11,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from starlette.requests import Request
 
-from serects import *
+from mysecrets import *
 
 security = HTTPBasic()
 app = FastAPI()
