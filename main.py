@@ -164,7 +164,7 @@ def deceased(
     return {"message": "bed cleared"}
 
 
-@api_router.get("/data")
+@app.get("/data")
 def data(request: Request):
     # update_data()
     data = pd.read_csv("data.csv")
@@ -175,6 +175,7 @@ def data(request: Request):
         zip(x['bed_type'], x[0]))).to_json(orient="index")
     data_json = json.loads(data_json)
 
+    # return data_json
     return templates.TemplateResponse("index.html", {
         "request": request,
         "id": 123,
@@ -182,7 +183,7 @@ def data(request: Request):
     })
 
 
-@api_router.put("/update_data")
+@app.put("/update_data")
 def update_data_api():
     update_data()
     return {"message": "data updated"}
