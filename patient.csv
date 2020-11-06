@@ -1,1 +1,1 @@
-patient_id,ticket_id,hospital,name,bed_type,in_queue,alloted,created_date
+patient_id,patient_name,ticket_id,institute,institute_type,bed_type,in_queue,alloted,created_date

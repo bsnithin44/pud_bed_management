@@ -36,7 +36,8 @@ def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 class Patient(BaseModel):
     ticket_id: str
     patient_id: str
-    hospital: str
+    hospital: Optional[str] = ''
+    ccc: Optional[str] =''
     bed_type: Optional[str] = 'no_bed_type'
     name: Optional[str] = None
 
@@ -46,12 +47,12 @@ def update_data():
     df_patient = pd.read_csv("patient.csv")
     df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
-    for hospital in df_data.hospital.unique():
-        df_p1 = df_patient[df_patient['hospital'] == hospital]
+    for institute in df_data.institute.unique():
+        df_p1 = df_patient[df_patient['institute'] == institute]
 
         for bed_type in ('Oxygen Bed', 'Isolation Bed', 'Ventilator Bed'):
             df_p1_b = df_p1[df_p1['bed_type'] == bed_type]
-            index_ = df_data[(df_data['hospital'] == hospital) & (
+            index_ = df_data[(df_data['institute'] == institute) & (
                 df_data['bed_type'] == bed_type)].index
 
             occupied = df_p1_b[df_p1_b['alloted']
@@ -65,7 +66,7 @@ def update_data():
         df_p1_q = df_p1[df_p1['in_queue'] == True]
         queue_not_decided = df_p1_q[(
             df_p1_q['bed_type'] == 'no_bed_type')]['patient_id'].count()
-        df_data.loc[(df_data['hospital'] == hospital) & (
+        df_data.loc[(df_data['institute'] == institute) & (
             df_data['bed_type'] == bed_type), 'queue'] = queue_not_decided
 
     df_data.to_csv("data.csv", index=False)
@@ -78,18 +79,35 @@ def update_patient(alloted, in_queue, patient):
 
     # alloted = False
     # in_queue = True
-    data = [
-        patient.patient_id, patient.ticket_id, patient.hospital,
-        patient.name, patient.bed_type, in_queue,
-        alloted,
-        created_date
-    ]
+    institute_flag = 0
+    try:
+        if len(patient.hospital):
+            institute = patient.hospital
+            institute_flag = 1
+            institute_type = 'hospital'
+    except:
+        if len(patient.ccc):
+            institute = patient.ccc
+            institute_flag = 1
+            institute_type = 'ccc'
 
-    if patient.patient_id in df_patient['patient_id'].unique():
-        df_patient = df_patient.drop(
-            index=df_patient[df_patient['patient_id'] == patient.patient_id].index).reset_index(drop=True)
-    df_patient.loc[len(df_patient)] = data
-    df_patient.to_csv("patient.csv", index=False)
+    print(f"institute_flag: {institute_flag}")
+    if institute_flag:
+        data = [
+            patient.patient_id, patient.name, patient.ticket_id, institute,
+            institute_type, patient.bed_type, in_queue,
+            alloted,
+            created_date
+        ]
+
+        if patient.patient_id in df_patient['patient_id'].unique():
+            df_patient = df_patient.drop(
+                index=df_patient[df_patient['patient_id'] == patient.patient_id].index).reset_index(drop=True)
+        df_patient.loc[len(df_patient)] = data
+        df_patient.to_csv("patient.csv", index=False)
+        return 1
+    else:
+        return 0
 
 
 async def log_json(request: Request):
@@ -113,10 +131,14 @@ async def block_bed(
     alloted = False
     in_queue = True
 
-    update_patient(alloted, in_queue, patient)
-    update_data()
 
-    return {"message": "bed blocked"}
+    update_patient_flag = update_patient(alloted, in_queue, patient)
+    if update_patient_flag: 
+        update_data()
+
+        return {"message": "bed blocked"}
+    else:
+        return {"message":"please try again"}
 
 
 @api_router.put("/allot_bed")
@@ -128,10 +150,14 @@ def allot_bed(
     alloted = True
     in_queue = False
 
-    update_patient(alloted, in_queue, patient)
-    update_data()
+    update_patient_flag = update_patient(alloted, in_queue, patient)
+    if update_patient_flag: 
+        update_data()
 
-    return {"message": "bed alloted"}
+        return {"message": "bed blocked"}
+    else:
+        return {"message":"please try again"}
+
 
 
 @api_router.put("/cured")
@@ -143,10 +169,14 @@ def becuredds(
     alloted = False
     in_queue = False
 
-    update_patient(alloted, in_queue, patient)
-    update_data()
+    update_patient_flag = update_patient(alloted, in_queue, patient)
+    if update_patient_flag: 
+        update_data()
 
-    return {"message": "bed cleared"}
+        return {"message": "bed blocked"}
+    else:
+        return {"message":"please try again"}
+
 
 
 @api_router.put("/deceased")
@@ -158,10 +188,14 @@ def deceased(
     alloted = False
     in_queue = False
 
-    update_patient(alloted, in_queue, patient)
-    update_data()
+    update_patient_flag = update_patient(alloted, in_queue, patient)
+    if update_patient_flag: 
+        update_data()
 
-    return {"message": "bed cleared"}
+        return {"message": "bed blocked"}
+    else:
+        return {"message":"please try again"}
+
 
 
 @app.get("/data")
@@ -169,22 +203,53 @@ def data(request: Request):
     # update_data()
     data = pd.read_csv("data.csv")
 
-    data = data.groupby(['hospital', 'bed_type']).apply(
+    hospital = data[data['type']=='hospital']
+
+    hospital = hospital.groupby(['institute', 'bed_type']).apply(
         lambda x: x[['total', 'occupied', 'vacant', 'queue']].to_dict('list')).reset_index()
-    data_json = data.groupby('hospital').apply(lambda x: dict(
+    hospital_json = hospital.groupby('institute').apply(lambda x: dict(
         zip(x['bed_type'], x[0]))).to_json(orient="index")
-    data_json = json.loads(data_json)
+    hospital_json = json.loads(hospital_json)
+
+
+    ccc = data[data['type']=='ccc']
+
+    ccc = ccc.groupby(['institute', 'bed_type']).apply(
+        lambda x: x[['total', 'occupied', 'vacant', 'queue']].to_dict('list')).reset_index()
+    ccc_json = ccc.groupby('institute').apply(lambda x: dict(
+        zip(x['bed_type'], x[0]))).to_json(orient="index")
+    ccc_json = json.loads(ccc_json)
+
 
     # return data_json
     return templates.TemplateResponse("index.html", {
         "request": request,
-        "id": 123,
-        "data": data_json
+        "hospital_json": hospital_json,
+        "ccc_json": ccc_json
     })
 
 
+@app.get("/data/json")
+def jsondata(request: Request):
+
+    data = pd.read_csv("data.csv")
+
+    hospital = data[data['type']=='hospital']
+
+    hospital = hospital.groupby(['institute', 'bed_type']).apply(
+        lambda x: x[['total', 'occupied', 'vacant', 'queue']].to_dict('list')).reset_index()
+    hospital_json = hospital.groupby('institute').apply(lambda x: dict(
+        zip(x['bed_type'], x[0]))).to_json(orient="index")
+    hospital_json = json.loads(hospital_json)
+
+
+    return hospital_json
+
+
 @app.put("/update_data")
-def update_data_api():
+def update_data_api(
+    username: str = Depends(get_current_username)
+):
     update_data()
     return {"message": "data updated"}
 
