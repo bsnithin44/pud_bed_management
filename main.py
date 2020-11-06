@@ -77,19 +77,16 @@ def update_patient(alloted, in_queue, patient):
     df_patient = pd.read_csv("patient.csv")
     df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
-    # alloted = False
-    # in_queue = True
     institute_flag = 0
-    try:
-        if len(patient.hospital):
-            institute = patient.hospital
-            institute_flag = 1
-            institute_type = 'hospital'
-    except:
-        if len(patient.ccc):
-            institute = patient.ccc
-            institute_flag = 1
-            institute_type = 'ccc'
+    if len(patient.hospital)>1:
+        institute = patient.hospital
+        institute_flag = 1
+        institute_type = 'hospital'
+
+    elif len(patient.ccc)>1:
+        institute = patient.ccc
+        institute_flag = 1
+        institute_type = 'ccc'
 
     print(f"institute_flag: {institute_flag}")
     if institute_flag:

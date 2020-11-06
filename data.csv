@@ -15,7 +15,19 @@ ccc,CCMS,Oxygen Bed,25.0,0.0,25.0,0
 ccc,CCMS,Isolation Bed,50.0,0.0,50.0,0
 ccc,CCMS,Ventilator Bed,12.0,0.0,12.0,0
 ccc,CCMS,no_bed_type,,,,0
-ccc,ADCH,Oxygen Bed,25.0,0.0,25.0,0
-ccc,ADCH,Isolation Bed,50.0,0.0,50.0,0
-ccc,ADCH,Ventilator Bed,12.0,0.0,12.0,0
-ccc,ADCH,no_bed_type,,,,0
+ccc,SLIMS,Oxygen Bed,25.0,0.0,25.0,0
+ccc,SLIMS,Isolation Bed,50.0,0.0,50.0,0
+ccc,SLIMS,Ventilator Bed,12.0,0.0,12.0,0
+ccc,SLIMS,no_bed_type,,,,0
+ccc,AVMC,Oxygen Bed,25.0,0.0,25.0,0
+ccc,AVMC,Isolation Bed,50.0,0.0,50.0,0
+ccc,AVMC,Ventilator Bed,12.0,0.0,12.0,0
+ccc,AVMC,no_bed_type,,,,0
+ccc,PIMS,Oxygen Bed,25.0,0.0,25.0,0
+ccc,PIMS,Isolation Bed,50.0,0.0,50.0,0
+ccc,PIMS,Ventilator Bed,12.0,0.0,12.0,0
+ccc,PIMS,no_bed_type,,,,0
+ccc,PIMS,Oxygen Bed,25.0,0.0,25.0,0
+ccc,PIMS,Isolation Bed,50.0,0.0,50.0,0
+ccc,PIMS,Ventilator Bed,12.0,0.0,12.0,0
+ccc,PIMS,no_bed_type,,,,0
