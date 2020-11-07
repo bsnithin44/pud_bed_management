@@ -9,7 +9,7 @@ hospital,JIPMER,Ventilator Bed,12,0,12,0
 hospital,JIPMER,no_bed_type,,,,0
 ccc,SVMC,Oxygen Bed,25,0,25,0
 ccc,SVMC,Isolation Bed,50,0,50,0
-ccc,SVMC,Ventilator Bed,12,0,12,1
+ccc,SVMC,Ventilator Bed,12,0,12,0
 ccc,SVMC,no_bed_type,,,,0
 ccc,MGMC,Oxygen Bed,25,0,25,0
 ccc,MGMC,Isolation Bed,50,0,50,0
