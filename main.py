@@ -2,7 +2,7 @@ import json
 import secrets
 from datetime import datetime
 from typing import Optional
-
+import numpy as np
 import pandas as pd
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -65,7 +65,7 @@ def update_data():
 
         df_p1_q = df_p1[df_p1['in_queue'] == True]
         queue_not_decided = df_p1_q[(
-            df_p1_q['bed_type'] == 'no_bed_type')]['patient_id'].count()
+            df_p1_q['bed_type'] == 'no_bed_type') |(df_p1_q['bed_type'] == '')]['patient_id'].count()
         df_data.loc[(df_data['institute'] == institute) & (
             df_data['bed_type'] == bed_type), 'queue'] = queue_not_decided
 
@@ -76,6 +76,11 @@ def update_patient(alloted, in_queue, patient):
     created_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df_patient = pd.read_csv("patient.csv")
     df_patient['patient_id'] = df_patient['patient_id'].astype(str)
+
+    if patient.bed_type == '':
+        bed_type = 'no_bed_type'
+    else:
+        bed_type = patient.bed_type
 
     institute_flag = 0
     if len(patient.hospital)>1:
@@ -92,7 +97,7 @@ def update_patient(alloted, in_queue, patient):
     if institute_flag:
         data = [
             patient.patient_id, patient.name, patient.ticket_id, institute,
-            institute_type, patient.bed_type, in_queue,
+            institute_type, bed_type, in_queue,
             alloted,
             created_date
         ]
