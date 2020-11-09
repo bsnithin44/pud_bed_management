@@ -67,7 +67,7 @@ def update_data():
         queue_not_decided = df_p1_q[(
             df_p1_q['bed_type'] == 'no_bed_type') |(df_p1_q['bed_type'] == '')]['patient_id'].count()
         df_data.loc[(df_data['institute'] == institute) & (
-            df_data['bed_type'] == bed_type), 'queue'] = queue_not_decided
+            df_data['bed_type'] == 'no_bed_type'), 'queue'] = queue_not_decided
 
     df_data.to_csv("data.csv", index=False)
 
