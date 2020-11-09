@@ -199,7 +199,26 @@ def deceased(
         return {"message":"please try again"}
 
 
+@api_router.put("/update_bed")
+def update_bed(
+    patient: Patient,
+    username: str = Depends(get_current_username)
+):
 
+    df_patient = pd.read_csv("patient.csv")
+    df_patient['patient_id'] = df_patient['patient_id'].astype(str)
+    df1 = df_patient[df_patient['patient_id']==patient.patient_id]
+    if df1.shape[0]>=1:
+        alloted, in_queue = df1['alloted'].values[0],df1['in_queue'].values[0]
+        update_patient_flag = update_patient(alloted, in_queue, patient)
+        if update_patient_flag: 
+            update_data()
+
+            return {"message": "bed updated"}
+        else:
+            return {"message":"please try again"}
+    else:
+        return {"message":"patientId not found"}
 @app.get("/data")
 def data(request: Request):
     # update_data()

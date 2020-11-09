@@ -1,37 +1,37 @@
 type,institute,bed_type,total,occupied,vacant,queue
-hospital,IGMC,Oxygen Bed,50,0,50,0
-hospital,IGMC,Isolation Bed,100,0,100,0
-hospital,IGMC,Ventilator Bed,25,0,25,0
+hospital,IGMC,Oxygen Bed,50.0,0.0,50.0,0
+hospital,IGMC,Isolation Bed,100.0,0.0,100.0,0
+hospital,IGMC,Ventilator Bed,25.0,0.0,25.0,0
 hospital,IGMC,no_bed_type,,,,0
-hospital,JIPMER,Oxygen Bed,25,0,25,0
-hospital,JIPMER,Isolation Bed,50,0,50,0
-hospital,JIPMER,Ventilator Bed,12,0,12,0
+hospital,JIPMER,Oxygen Bed,25.0,0.0,25.0,0
+hospital,JIPMER,Isolation Bed,50.0,0.0,50.0,0
+hospital,JIPMER,Ventilator Bed,12.0,0.0,12.0,0
 hospital,JIPMER,no_bed_type,,,,0
-ccc,SVMC,Oxygen Bed,25,0,25,0
-ccc,SVMC,Isolation Bed,50,0,50,0
-ccc,SVMC,Ventilator Bed,12,0,12,1
+ccc,SVMC,Oxygen Bed,25.0,0.0,25.0,0
+ccc,SVMC,Isolation Bed,50.0,0.0,50.0,0
+ccc,SVMC,Ventilator Bed,12.0,0.0,12.0,0
 ccc,SVMC,no_bed_type,,,,0
-ccc,MGMC,Oxygen Bed,25,0,25,0
-ccc,MGMC,Isolation Bed,50,0,50,0
-ccc,MGMC,Ventilator Bed,12,0,12,0
+ccc,MGMC,Oxygen Bed,25.0,0.0,25.0,0
+ccc,MGMC,Isolation Bed,50.0,0.0,50.0,0
+ccc,MGMC,Ventilator Bed,12.0,0.0,12.0,0
 ccc,MGMC,no_bed_type,,,,0
-ccc,SLIMS,Oxygen Bed,25,0,25,0
-ccc,SLIMS,Isolation Bed,50,0,50,0
-ccc,SLIMS,Ventilator Bed,12,0,12,0
+ccc,SLIMS,Oxygen Bed,25.0,0.0,25.0,0
+ccc,SLIMS,Isolation Bed,50.0,0.0,50.0,0
+ccc,SLIMS,Ventilator Bed,12.0,0.0,12.0,0
 ccc,SLIMS,no_bed_type,,,,0
-ccc,AVMC,Oxygen Bed,25,0,25,0
-ccc,AVMC,Isolation Bed,50,0,50,0
-ccc,AVMC,Ventilator Bed,12,0,12,0
+ccc,AVMC,Oxygen Bed,25.0,0.0,25.0,0
+ccc,AVMC,Isolation Bed,50.0,0.0,50.0,0
+ccc,AVMC,Ventilator Bed,12.0,0.0,12.0,0
 ccc,AVMC,no_bed_type,,,,0
-ccc,PIMS,Oxygen Bed,25,0,25,0
-ccc,PIMS,Isolation Bed,50,0,50,0
-ccc,PIMS,Ventilator Bed,12,0,12,0
+ccc,PIMS,Oxygen Bed,25.0,0.0,25.0,0
+ccc,PIMS,Isolation Bed,50.0,0.0,50.0,0
+ccc,PIMS,Ventilator Bed,12.0,0.0,12.0,0
 ccc,PIMS,no_bed_type,,,,0
-ccc,SMVMCH,Oxygen Bed,25,0,25,0
-ccc,SMVMCH,Isolation Bed,50,0,50,0
-ccc,SMVMCH,Ventilator Bed,12,0,12,0
+ccc,SMVMCH,Oxygen Bed,25.0,0.0,25.0,0
+ccc,SMVMCH,Isolation Bed,50.0,0.0,50.0,0
+ccc,SMVMCH,Ventilator Bed,12.0,0.0,12.0,0
 ccc,SMVMCH,no_bed_type,,,,0
-ccc,Govt. Dental College,Oxygen Bed,25,0,25,0
-ccc,Govt. Dental College,Isolation Bed,50,0,50,0
-ccc,Govt. Dental College,Ventilator Bed,12,0,12,0
+ccc,Govt. Dental College,Oxygen Bed,25.0,0.0,25.0,0
+ccc,Govt. Dental College,Isolation Bed,50.0,0.0,50.0,0
+ccc,Govt. Dental College,Ventilator Bed,12.0,0.0,12.0,0
 ccc,Govt. Dental College,no_bed_type,,,,0
