@@ -31,13 +31,7 @@ ccc,SMVMCH,Oxygen Bed,25.0,0.0,25.0,0
 ccc,SMVMCH,Isolation Bed,50.0,0.0,50.0,0
 ccc,SMVMCH,Ventilator Bed,12.0,0.0,12.0,0
 ccc,SMVMCH,no_bed_type,,,,0
-<<<<<<< HEAD
 ccc,Govt. Dental College,Oxygen Bed,25.0,0.0,25.0,0
 ccc,Govt. Dental College,Isolation Bed,50.0,0.0,50.0,0
 ccc,Govt. Dental College,Ventilator Bed,12.0,0.0,12.0,0
-=======
-ccc,Govt. Dental College,Oxygen Bed,25,0,25,0
-ccc,Govt. Dental College,Isolation Bed,50,0,50,0
-ccc,Govt. Dental College,Ventilator Bed,12,0,12,0
->>>>>>> 9fa9674fba34d536bb9422fc0d82d127faf990c7
 ccc,Govt. Dental College,no_bed_type,,,,0
