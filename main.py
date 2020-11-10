@@ -68,7 +68,7 @@ async def block_bed(
         crud.update_data(db)
         return {"message":"Patient registered/ Bed blocked"}
     else:
-        return {"message":"Try again"}
+        return {"message":"Try again with valid fields"}
 
 
 @api_router.post("/allot_bed")
@@ -87,6 +87,8 @@ async def allot_bed(
     if flag: 
         crud.update_data(db)
         return {"message":"Patient Updated and bed allotted"}
+    else:
+        return {"message":"Try again with valid fields"}
 
 
 @api_router.put("/release_bed")
@@ -100,9 +102,12 @@ async def release_bed(
     allotted, in_queue = False, False
         
     if db_patient:
-        crud.update_patient(db=db, patient=patient, allotted= allotted, in_queue= in_queue)
-        crud.update_data(db)
-        return {"message":"Patient Updated and bed released"}
+        flag, patient = crud.update_patient(db=db, patient=patient, allotted= allotted, in_queue= in_queue)
+        if flag:
+            crud.update_data(db)
+            return {"message":"Patient Updated and bed released"}
+        else:
+            return {"message":"Try again with valid fields"}
     else:
         raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient.patient_id} does not exist")
 
@@ -115,14 +120,19 @@ async def update_bed(
 ):
 
     db_patient = crud.get_patient(db, patient_id=patient.patient_id)
-    allotted, in_queue = db_patient.allotted, db_patient.in_queue
+    
         
     if db_patient:
-        crud.update_patient(db=db, patient=patient, allotted= allotted, in_queue= in_queue)
-        crud.update_data(db)
-        return {"message":"Patient Updated and bed changed"}
+        allotted, in_queue = db_patient.allotted, db_patient.in_queue
+        flag, patient = crud.update_patient(db=db, patient=patient, allotted= allotted, in_queue= in_queue)
+        if flag:
+            crud.update_data(db)
+            return {"message":"Patient bed updated"}
+        else:
+            return {"message":"Try again with valid fields"}
     else:
         raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient.patient_id} does not exist")
+
 
 @app.get("/data")
 def data(

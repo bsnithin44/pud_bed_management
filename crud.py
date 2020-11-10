@@ -27,7 +27,7 @@ def get_patient_derived_feilds(patient:schemas.PatientCreate):
         institute_type = 'none'
         institute_flag = 0
 
-    return bed_type,institute_type,institute
+    return bed_type,institute_type,institute, institute_flag
 
 def create_patient(db: Session, patient: schemas.PatientCreate, allotted, in_queue):
 
@@ -54,21 +54,24 @@ def create_patient(db: Session, patient: schemas.PatientCreate, allotted, in_que
 
 def update_patient(db: Session, patient: schemas.PatientCreate, allotted, in_queue):
 
-    bed_type, institute, institute_type = get_patient_derived_feilds(patient)
+    bed_type, institute_type, institute, institute_flag = get_patient_derived_feilds(patient)
 
     db_patient = db.query(models.Patient).filter(models.Patient.patient_id == patient.patient_id).first()
+    if institute_flag:
 
-    db_patient.bed_type = bed_type
-    db_patient.institute = institute
-    db_patient.institute_type = institute_type
+        db_patient.bed_type = bed_type
+        db_patient.institute = institute
+        db_patient.institute_type = institute_type
 
-    db_patient.allotted = allotted
-    db_patient.in_queue = in_queue
-    db_patient.created_date = datetime.now()
+        db_patient.allotted = allotted
+        db_patient.in_queue = in_queue
+        db_patient.created_date = datetime.now()
 
-    db.commit()
-    db.refresh(db_patient)
-    return db_patient
+        db.commit()
+        db.refresh(db_patient)
+        return 1, db_patient
+    else:
+        return 0, None
 
 def initialise_data_in_db(db:Session):
     df = pd.read_csv("data.csv")
