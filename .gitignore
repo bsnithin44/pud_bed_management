@@ -1,6 +1,6 @@
 __pycache__/
 .env/
-.vscode/
+.vscode/*
 mysecrets.py
 data.csv
 patient.csv

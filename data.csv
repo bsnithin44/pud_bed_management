@@ -1,4 +1,4 @@
-type,institute,bed_type,total,occupied,vacant,queue
+institute_type,institute,bed_type,total,occupied,vacant,queue
 hospital,IGMC,Oxygen Bed,50.0,0.0,50.0,0
 hospital,IGMC,Isolation Bed,100.0,0.0,100.0,0
 hospital,IGMC,Ventilator Bed,25.0,0.0,25.0,0
