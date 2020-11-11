@@ -4,3 +4,4 @@ __pycache__/
 mysecrets.py
 data.csv
 patient.csv
+configs/config.json

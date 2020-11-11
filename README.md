@@ -1,10 +1,14 @@
 A Fast API based python app for bed management.
 
-Create my_secrets.py at below content
+Create a config.json with path configs/config.json with below structure
 
 ```
-username = '<username>'
-password = '<passowrd>'
+{
+    "app_creds":{
+        "username":"",
+        "password":""
+    }
+}
 ```
 
 Run the docker file with below command
