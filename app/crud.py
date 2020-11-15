@@ -1,8 +1,32 @@
 from sqlalchemy.orm import Session
-import models, schemas
+from app import models, schemas
 from datetime import datetime
 import pandas as pd
+from typing import List
 
+def get_patients(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Patient).offset(skip).limit(limit).all()
+
+def create_patients(db: Session, patients: List[schemas.PatientInDb] ):
+    num_of_deleted_rows = db.query(models.Patient).delete()
+
+    db.add_all(patients)
+    db.commit()
+    return db.query(models.Patient).count()
+
+def add_patients(db: Session, patients: List[schemas.PatientInDb] ):
+
+    db.add_all(patients)
+    db.commit()
+
+    return db.query(models.Patient).count()
+
+def delete_patients(db: Session):
+     
+    deleted_rows = db.query(models.Patient).delete()
+    db.commit()
+    return deleted_rows
+    
 def get_patient(db: Session, patient_id: str ):
     return db.query(models.Patient).filter(models.Patient.patient_id == patient_id).first()
 
@@ -29,19 +53,19 @@ def get_patient_derived_feilds(patient:schemas.PatientCreate):
 
     return bed_type,institute_type,institute, institute_flag
 
-def create_patient(db: Session, patient: schemas.PatientCreate, allotted, in_queue):
+def create_patient(db: Session, patient: schemas.PatientCreate, patient_id: str):
 
     bed_type, institute_type, institute, institute_flag = get_patient_derived_feilds(patient)
     
     if institute_flag:
         db_patient = models.Patient(
-            patient_id = patient.patient_id,
+            patient_id = patient_id,
             ticket_id = patient.ticket_id, 
             institute = institute,
             institute_type = institute_type,
             bed_type = bed_type,
-            allotted = allotted,
-            in_queue = in_queue,
+            allotted = patient.allotted,
+            in_queue = patient.in_queue,
             created_date = datetime.now()
             )
         db.add(db_patient)
@@ -52,19 +76,19 @@ def create_patient(db: Session, patient: schemas.PatientCreate, allotted, in_que
         return 0, None
 
 
-def update_patient(db: Session, patient: schemas.PatientCreate, allotted, in_queue):
+def update_patient(db: Session, patient: schemas.PatientCreate, patient_id :str):
 
     bed_type, institute_type, institute, institute_flag = get_patient_derived_feilds(patient)
 
-    db_patient = db.query(models.Patient).filter(models.Patient.patient_id == patient.patient_id).first()
+    db_patient = db.query(models.Patient).filter(models.Patient.patient_id == patient_id).first()
     if institute_flag:
 
         db_patient.bed_type = bed_type
         db_patient.institute = institute
         db_patient.institute_type = institute_type
 
-        db_patient.allotted = allotted
-        db_patient.in_queue = in_queue
+        db_patient.allotted = db_patient.allotted
+        db_patient.in_queue = db_patient.in_queue
         db_patient.created_date = datetime.now()
 
         db.commit()

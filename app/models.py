@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship
 
-from database import Base
+from app.database import Base
 
 
 class Patient(Base):
@@ -18,7 +18,7 @@ class Patient(Base):
     bed_type = Column(String, unique=False, index=True,default= 'no_bed_type')
     allotted = Column(Boolean, default=False)
     in_queue = Column(Boolean, default=False)
-    created_date = Column(DateTime, unique=False, index=True,default= '')
+    created_date = Column(String, unique=False, index=True,default= '')
 
 class InstituteData(Base):
     __tablename__ = "institute_master"
