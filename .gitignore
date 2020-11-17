@@ -5,3 +5,4 @@ mysecrets.py
 data.csv
 patient.csv
 configs/config.json
+*.db

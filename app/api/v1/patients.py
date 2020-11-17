@@ -38,13 +38,13 @@ async def get_patients(
     status_code=status.HTTP_201_CREATED,
 )
 async def post_patients(
+    patients : List[schemas.PatientInDb],
     db: Session = Depends(get_db),
-    patients = List[schemas.PatientInDb],
     username: str = Depends(auth.get_current_username)
 ):
     patients_count = crud.create_patients(db, patients)
     return {
-        "message":f"New {patients_count} patients created."
+        "message":f"{patients_count} new patients created."
     }
 
 
@@ -53,13 +53,13 @@ async def post_patients(
     status_code=status.HTTP_200_OK,
 )
 async def put_patients(
+    patients : List[schemas.PatientInDb],
     db: Session = Depends(get_db),
-    patients = List[schemas.PatientInDb],
     username: str = Depends(auth.get_current_username)
 ):
-    patients_count = crud.add_patients(db, patients)
+    patients_count = crud.update_patients(db, patients)
     return {
-        "message":f"Total patients : {patients_count}."
+        "message":f"Total patients {patients_count}."
     }
 
 
@@ -89,7 +89,7 @@ async def get_patient(
     db: Session = Depends(get_db),
     username: str = Depends(auth.get_current_username)
 ):
-    db_patient = crud.get_patient(db, patient_id = patient_id)
+    db_patient = crud.get_patient_by_id(db, patient_id = patient_id)
     if db_patient:
         
         return db_patient
@@ -104,11 +104,11 @@ async def create_patient(
     db: Session = Depends(get_db),
     username: str = Depends(auth.get_current_username)
 ):
-    db_patient = crud.get_patient(db, patient_id = patient_id)
+    db_patient = crud.get_patient_by_id(db, patient_id = patient_id)
     if db_patient:
         db.query(models.Patient).filter(models.Patient.patient_id == patient_id).delete()
         db.commit()
-    flag, patient = crud.create_patient(db=db, patient=patient, patient_id = patient_id)
+    flag, patient = crud.create_patient_by_id(db=db, patient=patient, patient_id = patient_id)
     if flag: 
         crud.update_data(db)
         return {
@@ -126,9 +126,9 @@ async def update_patient(
     username: str = Depends(auth.get_current_username)
 ):
 
-    db_patient = crud.get_patient(db, patient_id= patient_id)        
+    db_patient = crud.get_patient_by_id(db, patient_id= patient_id)        
     if db_patient:
-        flag, patient = crud.update_patient(db=db, patient=patient, patient_id= patient_id)
+        flag, patient = crud.update_patient_by_id(db=db, patient=patient, patient_id= patient_id)
         if flag:
             crud.update_data(db)
             return {
@@ -148,11 +148,14 @@ async def delete_patient(
     db: Session = Depends(get_db),
     username: str = Depends(auth.get_current_username)
 ):
-    db_patient = crud.get_patient(db, patient_id = patient_id)
+    db_patient = crud.get_patient_by_id(db, patient_id = patient_id)
     if db_patient:
-        db.query(models.Patient).filter(models.Patient.patient_id == patient_id).delete()
-        db.commit()
-        crud.update_data(db)
-        return {"message":"Patient removed and bed released."}
+        flag = crud.delete_patient_by_id(db, patient_id = patient_id)
+        
+        if flag:
+            crud.update_data(db)
+            return {"message":"Patient removed and bed released."}
+        else:
+            raise HTTPException(status_code=422, detail="Please try again.")
     else:
         raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient_id} does not exist.")

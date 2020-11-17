@@ -26,22 +26,15 @@ class PatientInDb(PatientBase):
     class Config:
         orm_mode = True
 
-class HospitalBase(BaseModel):
-    institute:str
+class InstituteBase(BaseModel):
     institute_type:str
+    bed_type:str
     # state: Optional[str] =''
-
-class HospitalCreate(HospitalBase):
-    bed_type:str
     total:int
     occupied:int
     vacant:int
     queue:int
 
-class HospitalUpdate(HospitalBase):
-    bed_type:str
-    total:int
-    occupied:int
-    vacant:int
-    queue:int
 
+class InstituteInDb(InstituteBase):
+    institute_name:str
