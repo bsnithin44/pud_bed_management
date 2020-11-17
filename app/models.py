@@ -5,10 +5,11 @@ from app.database import Base
 
 class Institute(Base):
     __tablename__='institutes'
+    id = Column(Integer, primary_key=True, index=True)
+    institute_name = Column(String, unique=False, index=True)
+    institute_type = Column(String, unique=False,index=True)
+    bed_type = Column(String, unique=False, index=True)
 
-    institute_name = Column(String, unique=True, primary_key=True, index=True)
-    institute_type = Column(String, index=True)
-    bed_type = Column(String, index=True)
     total = Column(Integer)
     occupied = Column(Integer,default =0)
     vacant = Column(Integer)
@@ -17,7 +18,6 @@ class Institute(Base):
 
 class Patient(Base):
     __tablename__ = "patients"
-
     patient_id = Column(String, unique=True, primary_key=True, index=True)
     patient_name = Column(String, unique=False, default = None)
 
@@ -45,17 +45,17 @@ class Patient(Base):
     #     # self.in_queue=in_queue
     #     # self.created_date=created_date
 
-class InstituteData(Base):
-    __tablename__ = "institute_master"
+# class InstituteData(Base):
+#     __tablename__ = "institute_master"
 
-    id = Column(String, unique=True, primary_key = True, index=True)
-    institute_type = Column(String, unique=False, index=True)
-    institute = Column(String, unique=False, index=True)
-    bed_type = Column(String, unique=False, index=True)
-    total = Column(Float, unique=False, index=False)
-    occupied = Column(Float, unique=False, index=False)
-    vacant = Column(Float, unique=False, index=False)
-    queue = Column(Float, unique=False, index=False)
+#     id = Column(String, unique=True, primary_key = True, index=True)
+#     institute_type = Column(String, unique=False, index=True)
+#     institute_name = Column(String, unique=False, index=True)
+#     bed_type = Column(String, unique=False, index=True)
+#     total = Column(Float, unique=False, index=False)
+#     occupied = Column(Float, unique=False, index=False)
+#     vacant = Column(Float, unique=False, index=False)
+#     queue = Column(Float, unique=False, index=False)
 
 
     

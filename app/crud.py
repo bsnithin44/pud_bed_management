@@ -4,31 +4,55 @@ from datetime import datetime
 import pandas as pd
 from typing import List
 
-# # institutes
-# def get_institutes(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.Institute).offset(skip).limit(limit).all()
+# institutes
+def get_institutes(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Institute).offset(skip).limit(limit).all()
 
 
-# def create_institutes(db: Session, institutes: List[schemas.InstituteIn] ):
-#     num_of_deleted_rows = db.query(models.Institute).delete()
 
-#     db.add_all(institutes)
-#     db.commit()
-#     return db.query(models.Institute).count()
+def create_institutes(db: Session, institutes: List[schemas.InstituteInDb] ):
+    num_of_deleted_rows = db.query(models.Institute).delete()
 
-# def add_institutes(db: Session, institutes: List[schemas.InstituteIn] ):
+    for institute in institutes:
+        print()
+        try:
+            institute = models.Institute(**institute.dict())
+            db.add(institute)
+        except:
+            pass
 
-#     db.add_all(institutes)
-#     db.commit()
+    db.commit()
+    return db.query(models.Institute).count()
 
-#     return db.query(models.Institute).count()
 
-# def delete_institutes(db: Session):
-     
-#     deleted_rows = db.query(models.Institute).delete()
-#     db.commit()
-#     return deleted_rows
+def update_institutes(db: Session, institutes: List[schemas.InstituteInDb] ):
+    
+    for institute in institutes:
+        institute = models.Institute(**institute.dict())
 
+
+        db_institute = db.query(models.Institute)\
+        .filter(models.Institute.institute_name == institute.institute_name,
+        models.Institute.institute_type == institute.institute_type,
+        models.Institute.bed_type == institute.bed_type).first()
+
+
+        if db_institute:
+            
+            db_institute.total = institute.total
+            db_institute.occupied = institute.occupied
+            db_institute.vacant = institute.vacant
+            db_institute.queue = institute.total
+        else:
+            db.add(institute)
+
+    db.commit()
+    return db.query(models.Institute).count()
+
+def delete_institutes(db: Session):
+    deleted_rows = db.query(models.Institute).delete()
+    db.commit()
+    return deleted_rows
 
 # patients
 def get_patients(db: Session, skip: int = 0, limit: int = 100):

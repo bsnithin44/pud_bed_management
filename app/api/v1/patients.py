@@ -19,25 +19,11 @@ def get_db():
         db.close()
 
 
-# patients
-@router.get(
-    "/patients", 
-    status_code=status.HTTP_200_OK,
-    response_model=List[schemas.PatientInDb]    
-)
-async def get_patients(
-    db: Session = Depends(get_db),
-    # username: str = Depends(auth.get_current_username)
-):
-    patients = crud.get_patients(db)
-    return patients
-
-
 @router.post(
     "/patients", 
     status_code=status.HTTP_201_CREATED,
 )
-async def post_patients(
+async def create_patients(
     patients : List[schemas.PatientInDb],
     db: Session = Depends(get_db),
     username: str = Depends(auth.get_current_username)
@@ -52,7 +38,7 @@ async def post_patients(
     "/patients", 
     status_code=status.HTTP_200_OK,
 )
-async def put_patients(
+async def update_patients(
     patients : List[schemas.PatientInDb],
     db: Session = Depends(get_db),
     username: str = Depends(auth.get_current_username)
@@ -62,6 +48,18 @@ async def put_patients(
         "message":f"Total patients {patients_count}."
     }
 
+# patients
+@router.get(
+    "/patients", 
+    status_code=status.HTTP_200_OK,
+    response_model=List[schemas.PatientInDb]    
+)
+async def read_patients(
+    db: Session = Depends(get_db),
+    # username: str = Depends(auth.get_current_username)
+):
+    patients = crud.get_patients(db)
+    return patients
 
 @router.delete(
     "/patients", 
@@ -79,22 +77,6 @@ async def delete_patients(
 
 
 # Patient by id
-@router.get(
-    "/patients/{patient_id}",
-    status_code=status.HTTP_200_OK,
-    response_model = schemas.PatientInDb,
-)
-async def get_patient(
-    patient_id : str,
-    db: Session = Depends(get_db),
-    username: str = Depends(auth.get_current_username)
-):
-    db_patient = crud.get_patient_by_id(db, patient_id = patient_id)
-    if db_patient:
-        
-        return db_patient
-    else:
-        raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient_id} does not exist.")
 
 
 @router.post("/patients/{patient_id}", status_code=status.HTTP_201_CREATED)
@@ -137,6 +119,23 @@ async def update_patient(
             }
         else:
             raise HTTPException(status_code=422, detail="Please provide either Hospital or CCC name.")
+    else:
+        raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient_id} does not exist.")
+
+@router.get(
+    "/patients/{patient_id}",
+    status_code=status.HTTP_200_OK,
+    response_model = schemas.PatientInDb,
+)
+async def read_patient(
+    patient_id : str,
+    db: Session = Depends(get_db),
+    username: str = Depends(auth.get_current_username)
+):
+    db_patient = crud.get_patient_by_id(db, patient_id = patient_id)
+    if db_patient:
+        
+        return db_patient
     else:
         raise HTTPException(status_code=404, detail=f"Patient with Patient ID :{patient_id} does not exist.")
 

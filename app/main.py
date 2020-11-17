@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 from starlette.requests import Request
 
 from app import auth, crud, models, schemas
-from app.api.v1 import beds, patients
+from app.api.v1 import beds, patients, institutes
 from app.database import SessionLocal, engine
 
 app = FastAPI()
@@ -39,7 +39,14 @@ app.include_router(
 app.include_router(
     router=patients.router,
     prefix="/api/v1",
-    tags=["Patients"],
+    tags=["Patients v1"],
+    dependencies=[Depends(dependency=auth.get_current_username)],
+    responses={404: {"description": "Not found"}},
+)
+app.include_router(
+    router=institutes.router,
+    prefix="/api/v1",
+    tags=["Institutes v1"],
     dependencies=[Depends(dependency=auth.get_current_username)],
     responses={404: {"description": "Not found"}},
 )
