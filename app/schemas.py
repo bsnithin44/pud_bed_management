@@ -16,7 +16,7 @@ class PatientCreate(PatientUpdate):
 
 class PatientInDb(PatientBase):
     patient_id : str
-    institute :str
+    institute_name :str
     institute_type :str
     bed_type :str
     allotted : bool

@@ -8,8 +8,6 @@ from typing import List
 def get_institutes(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Institute).offset(skip).limit(limit).all()
 
-
-
 def create_institutes(db: Session, institutes: List[schemas.InstituteInDb] ):
     num_of_deleted_rows = db.query(models.Institute).delete()
 
@@ -35,8 +33,6 @@ def update_institutes(db: Session, institutes: List[schemas.InstituteInDb] ):
         .filter(models.Institute.institute_name == institute.institute_name,
         models.Institute.institute_type == institute.institute_type,
         models.Institute.bed_type == institute.bed_type).first()
-
-
         if db_institute:
             
             db_institute.total = institute.total
@@ -100,29 +96,29 @@ def get_patient_derived_feilds(patient:schemas.PatientCreate):
         bed_type = patient.bed_type    
     institute_flag = 0
     if len(patient.hospital)>1:
-        institute = patient.hospital
+        institute_name = patient.hospital
         institute_flag = 1
         institute_type = 'hospital'
 
     elif len(patient.ccc)>1:
-        institute = patient.ccc
+        institute_name = patient.ccc
         institute_flag = 1
         institute_type = 'ccc'
     else:
-        institute = 'none'
+        institute_name = 'none'
         institute_type = 'none'
         institute_flag = 0
 
-    return bed_type,institute_type,institute, institute_flag
+    return bed_type,institute_type,institute_name, institute_flag
 
 def create_patient_by_id(db: Session, patient: schemas.PatientCreate, patient_id: str):
-    bed_type, institute_type, institute, institute_flag = get_patient_derived_feilds(patient)
+    bed_type, institute_type, institute_name, institute_flag = get_patient_derived_feilds(patient)
     
     if institute_flag:
         db_patient = models.Patient(
             patient_id = patient_id,
             ticket_id = patient.ticket_id, 
-            institute = institute,
+            institute_name = institute_name,
             institute_type = institute_type,
             bed_type = bed_type,
             allotted = patient.allotted,
@@ -137,23 +133,23 @@ def create_patient_by_id(db: Session, patient: schemas.PatientCreate, patient_id
         return 0, None
 
 
-def initialise_data_in_db(db:Session):
-    df = pd.read_csv("data.csv")
+def initialise_data_in_db(db:Session,filename):
+    df = pd.read_csv(filename)
     df['id'] = df.index.astype(int)
-    df.to_sql(name='institute_master', con=db.bind, index=False,if_exists='replace')
+    df.to_sql(name='institutes', con=db.bind, index=False,if_exists='replace')
 
 def update_data(db:Session):
-    df_data = pd.read_sql("institute_master",con=db.bind)
+    df_data = pd.read_sql("institutes",con=db.bind)
     df_patient = pd.read_sql("patients",con = db.bind)
 
     df_patient['patient_id'] = df_patient['patient_id'].astype(str)
 
-    for institute in df_data.institute.unique():
-        df_p1 = df_patient[df_patient['institute'] == institute]
+    for institute_name in df_data.institute_name.unique():
+        df_p1 = df_patient[df_patient['institute_name'] == institute_name]
 
         for bed_type in ('Oxygen Bed', 'Isolation Bed', 'Ventilator Bed'):
             df_p1_b = df_p1[df_p1['bed_type'] == bed_type]
-            index_ = df_data[(df_data['institute'] == institute) & (
+            index_ = df_data[(df_data['institute_name'] == institute_name) & (
                 df_data['bed_type'] == bed_type)].index
 
             occupied = df_p1_b[df_p1_b['allotted']
@@ -167,9 +163,9 @@ def update_data(db:Session):
         df_p1_q = df_p1[df_p1['in_queue'] == True]
         queue_not_decided = df_p1_q[(
             df_p1_q['bed_type'] == 'no_bed_type') |(df_p1_q['bed_type'] == '')]['patient_id'].count()
-        df_data.loc[(df_data['institute'] == institute) & (
+        df_data.loc[(df_data['institute_name'] == institute_name) & (
             df_data['bed_type'] == 'no_bed_type'), 'queue'] = queue_not_decided
-    df_data.to_sql(name='institute_master', con=db.bind, index=False,if_exists='replace')
+    df_data.to_sql(name='institutes', con=db.bind, index=False,if_exists='replace')
 
 
 def get_patient_by_id(db: Session, patient_id: str ):
@@ -182,13 +178,13 @@ def delete_patient_by_id(db: Session, patient_id: str ):
 
 def update_patient_by_id(db: Session, patient: schemas.PatientCreate, patient_id :str):
 
-    bed_type, institute_type, institute, institute_flag = get_patient_derived_feilds(patient)
+    bed_type, institute_type, institute_name, institute_flag = get_patient_derived_feilds(patient)
 
     db_patient = db.query(models.Patient).filter(models.Patient.patient_id == patient_id).first()
     if institute_flag:
 
         db_patient.bed_type = bed_type
-        db_patient.institute = institute
+        db_patient.institute_name = institute_name
         db_patient.institute_type = institute_type
 
         db_patient.allotted = db_patient.allotted

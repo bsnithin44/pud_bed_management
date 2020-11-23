@@ -23,7 +23,7 @@ class Patient(Base):
 
     ticket_id = Column(String, unique=True, index=True)
 
-    institute = Column(String, unique=False, index=True,default = '')
+    institute_name = Column(String, unique=False, index=True,default = '')
     institute_type = Column(String, unique=False, index=True,default= '')
 
     bed_type = Column(String, unique=False, index=True,default= 'no_bed_type')
