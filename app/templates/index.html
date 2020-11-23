@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<title>
+	Puducherry COVID-19 Bed Management
+</title>
+
+<head>
+	<style>
+		body {
+			background-color: #f5ffff;
+			font-family: American Typewriter, serif;
+			font-weight: bold;
+			font-size: 18px;
+			margin: 40px 60px;
+		}
+
+		caption {
+			color: #333333e5;
+			font-size: 20px;
+			font-weight: bold;
+			font-family: Apple Chancery, serif;
+		}
+
+		.styled-table {
+			border-collapse: collapse;
+			margin: 25px 0;
+			font-size: 0.9em;
+			font-family: American Typewriter, serif;
+			min-width: 400px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+			border-right: thin solid #009879;
+			border-left: thin solid #009879;
+			font-weight: normal;
+		}
+
+		.styled-table th,
+		.styled-table td {
+			padding: 12px 15px;
+		}
+
+		.styled-table thead tr {
+			background-color: #009879;
+			color: #ffffff;
+			text-align: left;
+			font-weight: bold;
+			font-family: Apple Chancery;
+		}
+
+		.styled-table tbody tr {
+			border-bottom: thin solid #dddddd;
+			font-size: 16px;
+		}
+
+		.styled-table tbody tr:nth-of-type(even) {
+			background-color: #f3f3f3;
+		}
+
+		.styled-table tbody tr:last-of-type {
+			border-bottom: thin solid #009879;
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		var date = document.lastModified;
+		document.write("Last Modified: " + date);
+	</script>
+	<button onClick="window.location.reload();">Refresh Page</button>
+	<meta http-equiv="refresh" content="150" />
+	<h1 style="text-align: center; font-size: 40px;color: #333333e5;">Puducherry COVID-19 Bed Management</h1>
+
+
+	<div style="width: 100%;">
+
+		<div style="width: 50%; height: 100px;float: left;">
+			<h3 style=" font-size: 30px;color: #333333e5;">Hospitals</h3>
+			<div>
+				{% for hospital in hospital_json %}
+				<table class="styled-table">
+
+					<caption style="text-indent: 3em">{{ hospital }}</caption>
+					<thead>
+						<tr>
+							<th>Bed Type</th>
+							<th>Total</th>
+							<th>Occupied</th>
+							<th>Vacant</th>
+							<th>Queue</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Ventilator Bed</td>
+							<td>{{ hospital_json[hospital]['Ventilator Bed']['total'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Ventilator Bed']['occupied'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Ventilator Bed']['vacant'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Ventilator Bed']['queue'][0]|int }}</td>
+						</tr>
+						<tr>
+							<td>Oxygen Bed</td>
+							<td>{{ hospital_json[hospital]['Oxygen Bed']['total'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Oxygen Bed']['occupied'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Oxygen Bed']['vacant'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Oxygen Bed']['queue'][0]|int }}</td>
+						</tr>
+						<tr>
+							<td>Isolation Bed</td>
+							<td>{{ hospital_json[hospital]['Isolation Bed']['total'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Isolation Bed']['occupied'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Isolation Bed']['vacant'][0]|int }}</td>
+							<td>{{ hospital_json[hospital]['Isolation Bed']['queue'][0]|int }}</td>
+						</tr>
+						</tr>
+						<tr>
+							<td>No Bed Type</td>
+							<td>{{ hospital_json[hospital]['no_bed_type']['total'][0] }}</td>
+							<td>{{ hospital_json[hospital]['no_bed_type']['occupied'][0] }}</td>
+							<td>{{ hospital_json[hospital]['no_bed_type']['vacant'][0] }}</td>
+							<td>{{ hospital_json[hospital]['no_bed_type']['queue'][0]|int }}</td>
+						</tr>
+					</tbody>
+				</table>
+				{% endfor %}
+			</div>
+		</div>
+		<div style="margin-left: 50%; height: 100px;">
+			<h3 style=" font-size: 30px;color: #333333e5;">Covid care center</h3>
+			<div>
+				{% for ccc in ccc_json %}
+				<table class="styled-table">
+					<caption style="text-indent: 3em">{{ccc}}</caption>
+					<thead>
+						<tr>
+							<th>Bed Type</th>
+							<th>total</th>
+							<th>Occupied</th>
+							<th>vacant</th>
+							<th>Queue</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Ventilator Bed</td>
+							<td>{{ ccc_json[ccc]['Ventilator Bed']['total'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Ventilator Bed']['occupied'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Ventilator Bed']['vacant'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Ventilator Bed']['queue'][0]|int }}</td>
+						</tr>
+						<tr>
+							<td>Oxygen Bed</td>
+							<td>{{ ccc_json[ccc]['Oxygen Bed']['total'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Oxygen Bed']['occupied'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Oxygen Bed']['vacant'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Oxygen Bed']['queue'][0]|int }}</td>
+						</tr>
+						<tr>
+							<td>Isolation Bed</td>
+							<td>{{ ccc_json[ccc]['Isolation Bed']['total'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Isolation Bed']['occupied'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Isolation Bed']['vacant'][0]|int }}</td>
+							<td>{{ ccc_json[ccc]['Isolation Bed']['queue'][0]|int }}</td>
+						</tr>
+						</tr>
+						<tr>
+							<td>No Bed Type</td>
+							<td>{{ ccc_json[ccc]['no_bed_type']['total'][0] }}</td>
+							<td>{{ ccc_json[ccc]['no_bed_type']['occupied'][0] }}</td>
+							<td>{{ ccc_json[ccc]['no_bed_type']['vacant'][0] }}</td>
+							<td>{{ ccc_json[ccc]['no_bed_type']['queue'][0]|int }}</td>
+						</tr>
+					</tbody>
+				</table>
+				{% endfor %}
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>

@@ -7,17 +7,12 @@ from pydantic import BaseModel
 import json
 security = HTTPBasic()
 
-
-class Service(BaseModel):
-    service_id: str
-    service_name: str
-    run_id: str
-
 router = APIRouter()
 
 
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
 
+    # with open("co")
     with open("configs/config.json",'r') as f:
         config = json.load(f)
 
